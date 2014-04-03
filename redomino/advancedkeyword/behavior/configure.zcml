@@ -24,8 +24,6 @@
                  interface=".widget.IKeywordWidget" />
     </class>
 
-    <!--<adapter factory=".widget.KeywordFieldWidget" />-->
-
     <z3c:widgetTemplate
         mode="input"
         widget=".widget.IKeywordWidget"

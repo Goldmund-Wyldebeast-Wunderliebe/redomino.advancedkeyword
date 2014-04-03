@@ -28,7 +28,7 @@ from redomino.advancedkeyword.tests.base import TestCase
 BEHAVIOR = 'redomino.advancedkeyword.behavior.behavior.IAdvancedKeyword'
 
 class TestBehavior(TestCase):
-    """ Check if js, css, etc are correctly registered
+    """ Test the Dexterity behavoir for advanced keyword
     """
 
     def afterSetUp(self):

@@ -32,7 +32,7 @@ BEHAVIOR = 'redomino.advancedkeyword.behavior.behavior.IAdvancedKeyword'
 
 
 class TestWidget(TestCase):
-    """ Check if js, css, etc are correctly registered
+    """ Test the z3c.form keyword widget used by the Dexterity behavior
     """
 
     def afterSetUp(self):
