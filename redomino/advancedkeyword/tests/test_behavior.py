@@ -14,11 +14,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
-
-import unittest2 as unittest
+from plone.autoform.interfaces import IFormFieldProvider
+from plone.behavior.interfaces import IBehavior
 from plone.dexterity.fti import DexterityFTI
+from zope.component import getUtility
 
+from redomino.advancedkeyword.behavior.behavior import IAdvancedKeyword
 from redomino.advancedkeyword.tests.base import TestCase
+
+BEHAVIOR = 'redomino.advancedkeyword.behavior.behavior.IAdvancedKeyword'
 
 class TestBehavior(TestCase):
     """ Check if js, css, etc are correctly registered
@@ -31,7 +35,7 @@ class TestBehavior(TestCase):
         fti = DexterityFTI('Container')
         self.portal.portal_types._setObject('Container', fti)
         fti.klass = 'plone.dexterity.content.Container'
-        fti.behaviors = ('redomino.advancedkeyword.behavior.IAdvancedKeyword',)
+        fti.behaviors = (BEHAVIOR,)
         fti.allowed_content_types = ('Folder',)
 
         # Default configuration for container
@@ -41,6 +45,18 @@ class TestBehavior(TestCase):
     def test_container(self):
         self.assertEqual(self.container.id, 'container')
 
+    def test_installation(self):
+        kw_behavior = getUtility(IBehavior, name=BEHAVIOR)
+
+        # Behavior is installed when the ZCML is loaded
+        self.assertEqual(kw_behavior.interface, IAdvancedKeyword)
+
+        # This behavior is a form field provider
+        self.assertTrue(IFormFieldProvider.providedBy(kw_behavior.interface))
+
+    def test_usage(self):
+        kw_adapter = IAdvancedKeyword(self.container)
+        self.assertTrue(kw_adapter)
 
 def test_suite():
     from unittest import TestSuite, makeSuite
