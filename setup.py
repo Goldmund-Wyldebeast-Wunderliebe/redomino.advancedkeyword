@@ -3,7 +3,18 @@ import os
 
 version = '1.5.dev0'
 
-tests_require = ['Products.PloneTestCase']
+tests_require = [
+    'Products.PloneTestCase',
+]
+dexterity_require = [
+    'plone.app.dexterity >= 2.0',
+    'plone.behavior',
+    'plone.directives.form',
+    'zope.schema',
+    'zope.interface',
+    'zope.component',
+    'rwproperty',
+]
 
 setup(name='redomino.advancedkeyword',
       version=version,
@@ -44,6 +55,7 @@ setup(name='redomino.advancedkeyword',
       tests_require=tests_require,
       extras_require = {
           'test': tests_require,
+          'dexterity': dexterity_require,
       },
 #      setup_requires=["PasteScript"],
 #      paster_plugins=["ZopeSkel"],
