@@ -21,8 +21,15 @@ from zope.component import getMultiAdapter
 from zope.component import queryUtility
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.ATContentTypes.interfaces.interfaces import IATContentType
 from plone.memoize.instance import memoize
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from redomino.advancedkeyword.browser.utils import get_keywords
+
+try:
+    from plone.dexterity.interfaces import IDexterityContent
+except ImportError:
+    IDexterityContent = None
 
 from redomino.advancedkeyword.config import KEYWORD_SEPARATOR
 from redomino.advancedkeyword.browser.keywordmapcontrolpanel import IKeywordMapSchema
@@ -113,8 +120,14 @@ class KeywordsWidgetGenerator(KWGenerator):
     """
 
     def get_all_kw(self):
-        field = self.context.getField('subject')
-        return self.context.collectKeywords(field.getName(), field.accessor, field.widget.vocab_source)
+        keywords = []
+        if IATContentType.providedBy(self.context):
+            field = self.context.getField('subject')
+            keywords = self.context.collectKeywords(field.getName(), field.accessor, field.widget.vocab_source)
+        elif IDexterityContent and IDexterityContent.providedBy(self.context):
+            keywords = get_keywords()
+
+        return keywords
 
     @memoize
     def get_selected_kw(self):

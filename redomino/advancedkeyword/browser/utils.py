@@ -14,7 +14,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
-
+from Products.CMFCore.utils import getToolByName
+from zope.component.hooks import getSite
 
 from zope.publisher.browser import BrowserView
 from zope.component import getMultiAdapter
@@ -31,3 +32,6 @@ class KeywordMapEnabled(BrowserView):
         portal = getMultiAdapter((self.context, self.request), name=u"plone_portal_state").portal()
         return IKeywordMapSchema(portal).keywordmapenabled
 
+def get_keywords():
+    catalog = getToolByName(getSite(), 'portal_catalog')
+    return list(catalog.uniqueValuesFor('Subject'))

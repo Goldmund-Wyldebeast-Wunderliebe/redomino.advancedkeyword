@@ -156,3 +156,4 @@ Authors
 * Davide Moro (davidemoro) <davide.moro@redomino.com> (idea, concept, design and implementation)
 * Giacomo Spettoli <giacomo.spettoli@redomino.com>
 * Maurizio Lupo (sithmel) <maurizio.lupo@redomino.com>
+* Kim Chee Leong <leong@goldmund-wyldebeast-wunderliebe.com>

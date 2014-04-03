@@ -13,7 +13,9 @@ from plone.directives import form
 
 from Products.CMFCore.interfaces import IDublinCore
 
-from redomino.advancedkeyword import MessageFactory as _
+from redomino.advancedkeyword import _
+from redomino.advancedkeyword.behavior.widget import KeywordWidget
+
 
 class IAdvancedKeyword(form.Schema):
     """Add tags to content
@@ -22,17 +24,21 @@ class IAdvancedKeyword(form.Schema):
     form.fieldset(
             'categorization',
             label=_(u'Categorization'),
-            fields=('tags',),
+            fields=('advanced_keyword',),
         )
 
-    tags = schema.TextLine(title=u"Tags lala")
-    #
-    # tags = schema.TextLine(
-    #         title=_(u"Subject"),
-    #         description=_(u"Applicable tags"),
-    #         required=False,
-    #         # allow_uncommon=True,
-    #     )
+    form.widget('advanced_keyword', KeywordWidget)
+    advanced_keyword = schema.Set(
+        title=_(u'Tags'),
+        description=_(
+            u'Tags are commonly used for ad-hoc organization of content.'
+        ),
+        value_type=schema.Choice(
+            vocabulary=u"plone.app.vocabularies.Keywords",
+        ),
+        required=False,
+        missing_value=(),
+    )
 
 alsoProvides(IAdvancedKeyword, form.IFormFieldProvider)
 
@@ -48,10 +54,11 @@ class AdvancedKeyword(object):
         self.context = context
 
     @getproperty
-    def tags(self):
+    def advanced_keyword(self):
         return set(self.context.Subject())
+
     @setproperty
-    def tags(self, value):
+    def advanced_keyword(self, value):
         if value is None:
             value = ()
         self.context.setSubject(tuple(value))
