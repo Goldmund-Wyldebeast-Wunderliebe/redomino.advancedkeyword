@@ -63,6 +63,14 @@ def setup_product():
     load_config('testing.zcml', redomino.advancedkeyword.tests)
     fiveconfigure.debug_mode = False
 
+    try:
+        from plone import behavior
+    except ImportError:
+        pass
+    else:
+        load_config('configure.zcml', redomino.advancedkeyword.behavior)
+
+
     # We need to tell the testing framework that these products
     # should be available. This can't happen until after we have loaded
     # the ZCML. Thus, we do it here. Note the use of installPackage()
