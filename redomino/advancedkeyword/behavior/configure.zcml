@@ -19,23 +19,23 @@
         factory=".behavior.AdvancedKeyword"
         />
 
-    <!--<adapter factory=".widget.KeywordFieldWidget" />-->
+    <adapter factory=".widget.AdvancedKeywordFieldWidget" />
 
-    <class class=".widget.KeywordWidget">
+    <class class=".widget.AdvancedKeywordWidget">
         <require permission="zope.Public"
-                 interface=".widget.IKeywordWidget" />
+                 interface=".widget.IAdvancedKeywordWidget" />
     </class>
 
     <z3c:widgetTemplate
         mode="input"
-        widget=".widget.IKeywordWidget"
+        widget=".widget.IAdvancedKeywordWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="keyword_input.pt"
         />
 
     <z3c:widgetTemplate
         mode="display"
-        widget=".widget.IKeywordWidget"
+        widget=".widget.IAdvancedKeywordWidget"
         layer="z3c.form.interfaces.IFormLayer"
         template="keyword_display.pt"
         />
