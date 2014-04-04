@@ -26,8 +26,9 @@
 .found{
     background-color:yellow;
 }
-#subject,
-#form-widgets-IAdvancedKeyword-advanced_keyword {
+/*#subject,
+#form-widgets-IAdvancedKeyword-advanced_keyword*/
+#subject {
     display:none;
 }
 

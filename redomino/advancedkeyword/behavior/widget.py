@@ -1,29 +1,34 @@
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
-from unicodedata import normalize
+
+from plone.i18n.normalizer import IIDNormalizer
 from z3c.form.i18n import MessageFactory as _
-import re
 from z3c.form import interfaces as z3cfinterfaces
 from z3c.form.browser.select import SelectWidget
-import z3c.form
+from z3c.form.term import Terms
 
-import zope.component
-import zope.interface
+from zope.component import getUtility
+
+from zope.interface import implementsOnly
+from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
+from redomino.advancedkeyword.behavior.interfaces import IAdvancedKeywordWidget
+
+from redomino.advancedkeyword.browser.utils import get_keywords
+
+import logging
+logger = logging.getLogger(__name__)
 
 
-class IKeywordWidget(z3c.form.interfaces.ISequenceWidget):
-    """A keyword widget.
-    """
+class AdvancedKeywordWidget(SelectWidget):
 
-
-class KeywordWidget(SelectWidget):
-
-    zope.interface.implementsOnly(IKeywordWidget)
+    implementsOnly(IAdvancedKeywordWidget)
     klass = u'advanced-keyword-widget'
     multiple = 'multiple'
     size = 14
     noValueToken = u''
     noValueMessage = _('no value')
     promptMessage = _('select a value ...')
+    roleBasedAdd = True
 
     @property
     def formatted_value(self):
@@ -54,18 +59,66 @@ class KeywordWidget(SelectWidget):
             return default
 
         value = self.getValuesFromRequest() or default
-        if value == default:
-            return default
+        titles = []
+        normalizer = getUtility(IIDNormalizer)
 
-        extracted = set()
-        for token in value:
-            if token == self.noValueToken:
-                extracted.append(value)
-            elif token:
-                extracted.add(token)
+        if value != default:
+            for val in value:
+                token = normalizer.normalize(val)
+                if token == self.noValueToken:
+                    continue
 
-        return extracted
+                try:
+                    term = self.terms.getTermByToken(token)
+                    titles.append(term.title)
+                except LookupError:
+                    # a new value is entered which is not available in vocab
+                    continue
+        logger.info(titles)
+        return len(titles) > 0 and tuple(titles) or default
+
+    def updateTerms(self):
+        if self.terms is None:
+            self.terms = Terms()
+
+        values = get_keywords()
+
+        if None in values or '' in values:
+            values = [v for v in values if v]
+
+        added_values = self.getValuesFromRequest()
+        for value in added_values:
+            if value and value not in values:
+                values.append(value)
+
+        items = []
+        unique_values = set()
+        normalizer = getUtility(IIDNormalizer)
+
+        for value in values:
+            token = normalizer.normalize(value)
+            if token not in unique_values:
+                unique_values.add(token)
+                items.append(SimpleTerm(value, token, safe_unicode(value)))
+
+        self.terms.terms = SimpleVocabulary(items)
+        return self.terms
 
     @property
     def generator(self):
         return self.context.restrictedTraverse('keywordswidgetgenerator')
+
+    def show_new_kw(self):
+
+        if not self.roleBasedAdd:
+            return True
+        elif self.items:
+            portal_membership = getToolByName(self.context, 'portal_membership')
+            portal_properties = getToolByName(self.context, 'portal_properties')
+
+            member = portal_membership.getAuthenticatedMember()
+            allowRolesToAddKeywords = portal_properties.site_properties.allowRolesToAddKeywords
+
+            for role in member.getRolesInContext(self.context):
+                if role in allowRolesToAddKeywords:
+                    return True

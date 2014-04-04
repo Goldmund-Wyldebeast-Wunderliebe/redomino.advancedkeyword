@@ -19,6 +19,8 @@
         factory=".behavior.AdvancedKeyword"
         />
 
+    <!--<adapter factory=".widget.KeywordFieldWidget" />-->
+
     <class class=".widget.KeywordWidget">
         <require permission="zope.Public"
                  interface=".widget.IKeywordWidget" />
@@ -38,5 +40,8 @@
         template="keyword_display.pt"
         />
 
+    <adapter
+      factory=".field.KeywordsDataConverter"
+      />
 
 </configure>

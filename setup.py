@@ -7,6 +7,7 @@ tests_require = [
     'Products.PloneTestCase',
 ]
 dexterity_require = [
+    'collective.z3cform.keywordwidget',
     'plone.app.dexterity >= 2.0',
     'plone.behavior',
     'plone.directives.form',

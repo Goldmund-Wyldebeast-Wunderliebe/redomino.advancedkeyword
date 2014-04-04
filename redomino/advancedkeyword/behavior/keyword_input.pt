@@ -54,21 +54,27 @@
 </select>
 
 </div>
+<tal:condition define="show_new_kw view/show_new_kw">
+    <div id="advancedNewTagsSection" tal:attributes="style python:show_new_kw and ' ' or 'display: none;;'">
 
-<!--?<div style="width: 45%; float: right;">-->
-<!--?<span i18n:translate="label_new_categories">New categories</span>-->
-<!--?<br />-->
-<!--?<textarea id="" name=""-->
-          <!--?cols="15"-->
-          <!--?rows="13"-->
-          <!--?wrap="off"-->
-          <!--?tal:attributes="id string:${view/id};-->
-                          <!--?name string:${view/name}_additional"-->
-          <!--?tal:content="python:request.get('%s_additional' % view.name, '')"></textarea>-->
-<!--?</div>-->
+        <label for="subject_keywords">
+            <span i18n:translate="label_create_new_tags">
+                Create and apply new tags.
+            </span><br />
+            <span id="advancedNewTagsHelp" i18n:translate="label_newTagsHelp" class="formHelp">
+                Enter one tag per line, multiple words allowed. You can create nested tag separating each tag by a dot.
+            </span>
+        </label>
+        <textarea
+            id="entered_subjects"
+            name="subject:lines"
+            rows="4"
+            tal:attributes="id string:${view/id}_additional;
+                            name string:${view/name}_additional;"
+            tal:content="python:request.get('%s_additional' % view.name, '')">
+            A new tag
+        </textarea>
+    </div>
+</tal:condition>
 
-<!--?<input name="field-empty-marker" type="hidden" value="1"-->
-       <!--?tal:attributes="name string:${view/name}-empty-marker" />-->
-
-<!--?<div class="visualClear">-->
 </tal:block>

@@ -16,7 +16,6 @@
 # 02111-1307, USA.
 
 # TODO: make sure this test does not break when DX is not used.
-import os
 from z3c.form.interfaces import IFormLayer
 from z3c.form.term import Terms
 from zope.component import provideAdapter
@@ -24,8 +23,8 @@ from zope.component import provideAdapter
 from zope.interface.verify import verifyClass
 from z3c.form.testing import TestRequest
 from zope.schema.vocabulary import SimpleVocabulary
-from redomino.advancedkeyword.behavior.widget import IKeywordWidget, KeywordWidget
 
+from redomino.advancedkeyword.behavior.widget import IKeywordWidget, KeywordWidget
 from redomino.advancedkeyword.tests.base import TestCase
 
 BEHAVIOR = 'redomino.advancedkeyword.behavior.behavior.IAdvancedKeyword'
