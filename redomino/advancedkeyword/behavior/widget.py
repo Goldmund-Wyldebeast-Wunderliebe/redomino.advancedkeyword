@@ -5,13 +5,15 @@ from plone.i18n.normalizer import IIDNormalizer
 from z3c.form.i18n import MessageFactory as _
 from z3c.form import interfaces as z3cfinterfaces
 from z3c.form.browser.select import SelectWidget
+from z3c.form.interfaces import IFormLayer, IFieldWidget
 from z3c.form.term import Terms
+from z3c.form.widget import FieldWidget
 
-from zope.component import getUtility
+from zope.component import getUtility, adapter
 
-from zope.interface import implementsOnly
+from zope.interface import implementsOnly, implementer
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from redomino.advancedkeyword.behavior.interfaces import IAdvancedKeywordWidget
+from redomino.advancedkeyword.behavior.interfaces import IAdvancedKeywordWidget, IAdvancedKeywordCollection
 
 from redomino.advancedkeyword.browser.utils import get_keywords
 
@@ -122,3 +124,12 @@ class AdvancedKeywordWidget(SelectWidget):
             for role in member.getRolesInContext(self.context):
                 if role in allowRolesToAddKeywords:
                     return True
+
+
+@adapter(IAdvancedKeywordCollection,
+         IFormLayer)
+@implementer(IFieldWidget)
+def AdvancedKeywordFieldWidget(field, request):
+    """ IFieldWidget factory for KeywordWidget
+    """
+    return FieldWidget(field, AdvancedKeywordWidget(request))
