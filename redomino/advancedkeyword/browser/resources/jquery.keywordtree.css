@@ -26,7 +26,8 @@
 .found{
     background-color:yellow;
 }
-#subject{
+#subject,
+#form-widgets-IAdvancedKeyword-advanced_keyword {
     display:none;
 }
 
