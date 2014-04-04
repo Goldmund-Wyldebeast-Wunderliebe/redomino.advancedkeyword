@@ -120,11 +120,10 @@ class KeywordsWidgetGenerator(KWGenerator):
     """
 
     def get_all_kw(self):
-        keywords = []
         if IATContentType.providedBy(self.context):
             field = self.context.getField('subject')
             keywords = self.context.collectKeywords(field.getName(), field.accessor, field.widget.vocab_source)
-        elif IDexterityContent and IDexterityContent.providedBy(self.context):
+        else:
             keywords = get_keywords()
 
         return keywords
