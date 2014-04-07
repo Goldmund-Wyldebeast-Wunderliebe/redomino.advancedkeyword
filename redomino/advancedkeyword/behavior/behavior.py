@@ -19,6 +19,7 @@ from Products.CMFCore.interfaces import IDublinCore
 from redomino.advancedkeyword import _
 from redomino.advancedkeyword.behavior.field import AdvancedKeyword
 from redomino.advancedkeyword.behavior.widget import AdvancedKeywordWidget
+from redomino.advancedkeyword import PloneMessageFactory as _PMF
 
 import logging
 logger = logging.getLogger(__name__)
@@ -29,15 +30,17 @@ class IAdvancedKeyword(form.Schema):
 
     form.fieldset(
         'categorization',
-        label=_(u'Categorization'),
+        label=_PMF(u'label_schema_categorization', default=u'Categorization'),
         fields=('advanced_keyword',),
     )
 
     form.widget('advanced_keyword', AdvancedKeywordWidget)
     advanced_keyword = AdvancedKeyword(
-        title=_(u'Tags'),
-        description=_(
-            u'Tags are commonly used for ad-hoc organization of content.'
+        title=_PMF(u'label_tags', default=u'Tags'),
+        description=_PMF(
+            u'help_tags',
+            default=u'Tags are commonly used for ad-hoc organization of ' +
+                    u'content.'
         ),
         required=False,
     )
