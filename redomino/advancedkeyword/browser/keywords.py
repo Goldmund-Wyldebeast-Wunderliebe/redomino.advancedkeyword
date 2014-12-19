@@ -87,7 +87,7 @@ class KWGenerator(BrowserView):
         for k in keys:
             newprefix = prefix and KEYWORD_SEPARATOR.join([prefix,k]) or k
             children = self._getTree(d[k], newprefix)
-            out.append({'full_keyword': newprefix,
+            out.append({'full_keyword': unicode(newprefix, 'utf-8'),
                         'keyword': k,
                         'children': children,
                         'selected': self._is_selected(newprefix),
