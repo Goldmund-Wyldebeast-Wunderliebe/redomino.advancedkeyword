@@ -46,6 +46,7 @@ setup(name='redomino.advancedkeyword',
           'plone.app.vocabularies',
           'plone.app.z3cform',
           'Products.CMFPlone',
+          'rwproperty',
       ],
       entry_points="""
       # -*- Entry points: -*-
