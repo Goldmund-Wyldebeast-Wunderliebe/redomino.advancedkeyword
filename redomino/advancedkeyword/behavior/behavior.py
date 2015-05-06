@@ -47,6 +47,7 @@ class IAdvancedKeyword(form.Schema):
 
 alsoProvides(IAdvancedKeyword, form.IFormFieldProvider)
 
+
 class AdvancedKeyword(object):
     """Store tags in the Dublin Core metadata Subject field. This makes
     tags easy to search for.
@@ -60,7 +61,7 @@ class AdvancedKeyword(object):
 
     @getproperty
     def advanced_keyword(self):
-        logger.info('get: {0}'.format(self.context.Subject()))
+        logger.debug('get: {0}'.format(self.context.Subject()))
         return set(self.context.Subject())
 
     @setproperty
@@ -68,5 +69,5 @@ class AdvancedKeyword(object):
         if value is None:
             value = ()
 
-        logger.info('set: {0}'.format(value))
+        logger.debug('set: {0}'.format(value))
         self.context.setSubject(tuple(value))

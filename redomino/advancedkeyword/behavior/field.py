@@ -47,5 +47,5 @@ class KeywordsDataConverter(BaseDataConverter):
         if isinstance(collectionType, tuple):
             collectionType = collectionType[-1]
 
-        logger.info(value)
+        logger.debug(value)
         return collectionType(value)

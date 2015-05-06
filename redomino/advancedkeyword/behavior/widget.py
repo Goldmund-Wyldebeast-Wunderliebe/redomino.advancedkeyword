@@ -76,7 +76,7 @@ class AdvancedKeywordWidget(SelectWidget):
                 except LookupError:
                     # a new value is entered which is not available in vocab
                     continue
-        logger.info(titles)
+        logger.debug(titles)
         return len(titles) > 0 and tuple(titles) or default
 
     def updateTerms(self):
